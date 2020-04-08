@@ -11,10 +11,10 @@ def get_params(argv='1'):
         quick_test=True,     # To do quick test. Trains/test on small subset of dataset, and # of epochs
 
         # INPUT PATH
-        dataset_dir='/scratch/asignal/sharath/DCASE2020_SELD_dataset/',  # Base folder containing the foa/mic and metadata folders
+        dataset_dir='/home/jose/IO_DC3/base_folder',  # Base folder containing the foa/mic and metadata folders
 
         # OUTPUT PATH
-        feat_label_dir='/scratch/asignal/sharath/DCASE2020_SELD_dataset/feat_label/',  # Directory to dump extracted features and labels
+        feat_label_dir='/home/jose/IO_DC3/input_feature',  # Directory to dump extracted features and labels
         model_dir='models/',   # Dumps the trained models and training curves in this folder
         dcase_output=True,     # If true, dumps the results recording-wise in 'dcase_dir' path.
                                # Set this true after you have finalized your model, save the output, and submit
@@ -22,7 +22,7 @@ def get_params(argv='1'):
 
         # DATASET LOADING PARAMETERS
         mode='dev',         # 'dev' - development or 'eval' - evaluation dataset
-        dataset='foa',       # 'foa' - ambisonic or 'mic' - microphone signals
+        dataset='mic',       # 'foa' - ambisonic or 'mic' - microphone signals
 
         #FEATURE PARAMS
         fs=24000,
