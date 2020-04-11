@@ -8,19 +8,19 @@ def get_params(argv='1'):
     print("SET: {}".format(argv))
     # ########### default parameters ##############
     params = dict(
-        quick_test=False,     # To do quick test. Trains/test on small subset of dataset, and # of epochs
+        quick_test=True,     # To do quick test. Trains/test on small subset of dataset, and # of epochs
 
         # INPUT PATH
-        #dataset_dir='/home/javier/repos/DCASE2020-Task3/base_folder',  # Base folder containing the foa/mic and metadata folders
-        dataset_dir='/content/gdrive/My Drive/DCASE2020-Task3/base_folder',
+        dataset_dir='/home/javier/repos/DCASE2020-Task3/base_folder',  # Base folder containing the foa/mic and metadata folders
+        #dataset_dir='/content/gdrive/My Drive/DCASE2020-Task3/base_folder',
 
         # OUTPUT PATH
-        #feat_label_dir='/home/javier/repos/DCASE2020-Task3/input_feature/baseline_log_mel',  # Directory to dump extracted features and labels
-        feat_label_dir='/content/gdrive/My Drive/DCASE2020-Task3/input_feature/baseline_log_mel',
-        model_dir='/content/gdrive/My Drive/DCASE2020-Task3/outputs/baseline_log_mel/models/',   # Dumps the trained models and training curves in this folder
+        feat_label_dir='/home/javier/repos/DCASE2020-Task3/input_feature/baseline_log_mel',  # Directory to dump extracted features and labels
+        #feat_label_dir='/content/gdrive/My Drive/DCASE2020-Task3/input_feature/baseline_log_mel',
+        model_dir='/home/javier/repos/DCASE2020-Task3/outputs/baseline_log_mel/models/',   # Dumps the trained models and training curves in this folder
         dcase_output=True,     # If true, dumps the results recording-wise in 'dcase_dir' path.
                                # Set this true after you have finalized your model, save the output, and submit
-        dcase_dir='/content/gdrive/My Drive/DCASE2020-Task3/outputs/baseline_log_mel/results/',  # Dumps the recording-wise network output in this folder
+        dcase_dir='/home/javier/repos/DCASE2020-Task3/outputs/baseline_log_mel/results/',  # Dumps the recording-wise network output in this folder
 
         # DATASET LOADING PARAMETERS
         mode='dev',         # 'dev' - development or 'eval' - evaluation dataset
@@ -39,6 +39,9 @@ def get_params(argv='1'):
         dropout_rate=0,             # Dropout rate, constant for all layers
         nb_cnn2d_filt=64,           # Number of CNN nodes, constant for each layer
         f_pool_size=[4, 4, 2],      # CNN frequency pooling, length of list = number of CNN layers, list value = pooling per layer
+
+        # CNN squeeze-excitation parameter
+        ratio=8,
 
         rnn_size=[128, 128],        # RNN contents, length of list = number of layers, list value = number of nodes
         fnn_size=[128],             # FNN contents, length of list = number of layers, list value = number of nodes
