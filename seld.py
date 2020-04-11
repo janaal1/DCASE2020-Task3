@@ -163,7 +163,8 @@ def main(argv):
         model = keras_model.get_model(data_in=data_in, data_out=data_out, dropout_rate=params['dropout_rate'],
                                       nb_cnn2d_filt=params['nb_cnn2d_filt'], f_pool_size=params['f_pool_size'], t_pool_size=params['t_pool_size'],
                                       rnn_size=params['rnn_size'], fnn_size=params['fnn_size'],
-                                      weights=params['loss_weights'], doa_objective=params['doa_objective'])
+                                      weights=params['loss_weights'], doa_objective=params['doa_objective'],
+                                      ratio=params['ratio'])
         best_seld_metric = 99999
         best_epoch = -1
         patience_cnt = 0

@@ -178,7 +178,7 @@ def _tensor_shape(tensor):
     return getattr(tensor, '_keras_shape')
 
 def get_model(data_in, data_out, dropout_rate, nb_cnn2d_filt, f_pool_size, t_pool_size,
-              rnn_size, fnn_size, weights, doa_objective):
+              rnn_size, fnn_size, weights, doa_objective, ratio):
     # model definition
     spec_start = Input(shape=(data_in[-3], data_in[-2], data_in[-1]))
 
@@ -198,7 +198,7 @@ def get_model(data_in, data_out, dropout_rate, nb_cnn2d_filt, f_pool_size, t_poo
         spec_cnn = add([spec_cnn,spec_aux])
         spec_cnn = ELU()(spec_cnn)
 
-        spec_cnn = channel_spatial_squeeze_excite(spec_cnn,ratio=8)
+        spec_cnn = channel_spatial_squeeze_excite(spec_cnn,ratio=ratio)
 
         spec_cnn = add([spec_cnn, spec_aux])
 
