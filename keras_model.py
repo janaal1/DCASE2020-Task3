@@ -5,7 +5,7 @@
 from keras.layers import (Bidirectional, Conv2D, MaxPooling2D, Input, Concatenate,
                         Dense, Activation, Dropout, Reshape, Permute,
                         GlobalAveragePooling2D, add, Activation, Input, Flatten, Lambda, 
-                        GlobalAveragePooling1D, Reshape, ELU)
+                        GlobalAveragePooling1D, Reshape, ELU, multiply)
 #from keras.layers.core import Dense, Activation, Dropout, Reshape, Permute
 from keras.layers.recurrent import GRU
 from keras.layers.normalization import BatchNormalization
@@ -175,7 +175,7 @@ def channel_spatial_squeeze_excite(input_tensor, ratio=16):
     return x
 
 def _tensor_shape(tensor):
-    return getattr(tensor, '_shape_val') if TF else getattr(tensor, '_keras_shape')
+    return getattr(tensor, '_keras_shape')
 
 def get_model(data_in, data_out, dropout_rate, nb_cnn2d_filt, f_pool_size, t_pool_size,
               rnn_size, fnn_size, weights, doa_objective):
@@ -198,7 +198,7 @@ def get_model(data_in, data_out, dropout_rate, nb_cnn2d_filt, f_pool_size, t_poo
         spec_cnn = add([spec_cnn,spec_aux])
         spec_cnn = ELU()(spec_cnn)
 
-        spec_cnn = channel_spatial_squeeze_excite(spec_cnn,ratio=2)
+        spec_cnn = channel_spatial_squeeze_excite(spec_cnn,ratio=8)
 
         spec_cnn = add([spec_cnn, spec_aux])
 
