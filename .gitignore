@@ -5,3 +5,4 @@ input_feature/*
 .vscode/*
 __pycache__/*
 metrics/__pycache__/*
+gammatone/gammatone/__pycache__/*

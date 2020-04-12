@@ -12,6 +12,7 @@ import matplotlib.pyplot as plot
 import librosa
 plot.switch_backend('agg')
 import math
+from gammatone.gammatone import gtgram
 
 
 def nCr(n, r):
@@ -70,6 +71,10 @@ class FeatureClass:
         self._max_feat_frames = int(np.ceil(self._audio_max_len_samples / float(self._hop_len)))
         self._max_label_frames = int(np.ceil(self._audio_max_len_samples / float(self._label_hop_len)))
 
+        # If extract gammatone
+        self._is_gammatone = params['is_gammatone']
+        self._fmin = params['fmin']
+
     def _load_audio(self, audio_path):
         fs, audio = wav.read(audio_path)
         audio = audio[:, :self._nb_channels] / 32768.0 + self._eps
@@ -94,6 +99,25 @@ class FeatureClass:
                                         win_length=self._win_len, window='hann')
             spectra[:, :, ch_cnt] = stft_ch[:, :self._max_feat_frames].T
         return spectra
+
+    # Adding gammtone extaction
+    def _gammatone(self, audio_input):
+        audio_input = audio_input/abs(audio_input).max()
+        _nb_ch = audio_input.shape[1]
+        spectra = np.zeros((self._max_feat_frames, self._nb_mel_bins, _nb_ch))
+        for ch_cnt in range(_nb_ch):
+            gammatone_ch = gtgram.gtgram(wave=audio_input[:, ch_cnt], fs=self._fs, window_time=self._nfft/self._fs,
+                                            hop_time=self._hop_len_s, channels=self._nb_mel_bins, f_min=self._fmin).T
+            gammatone_ch = np.flipud(20 * np.log10(gammatone_ch + np.finfo(float).eps))
+            spectra[0,:,ch_cnt] = gammatone_ch[0,:]
+            spectra[-1,:,ch_cnt] = gammatone_ch[-1,:]
+            spectra[1:-1,:,ch_cnt] = gammatone_ch
+        return spectra
+
+    def _get_gammatone_reshape(self, gammatone):
+
+        gammatone_reshape = gammatone.reshape((gammatone.shape[0], self._nb_mel_bins * gammatone.shape[-1]))
+        return gammatone_reshape
 
     def _get_mel_spectrogram(self, linear_spectra):
         mel_feat = np.zeros((linear_spectra.shape[0], self._nb_mel_bins, linear_spectra.shape[-1]))
@@ -141,6 +165,11 @@ class FeatureClass:
         audio_spec = self._spectrogram(audio_in)
         return audio_spec
 
+    def _get_gammatone_for_file(self, audio_filename):
+        audio_in, fs = self._load_audio(os.path.join(self._aud_dir, audio_filename))
+        audio_gammatone = self._gammatone(audio_in)
+        return audio_gammatone
+
     # OUTPUT LABELS
     def get_labels_for_file(self, _desc_file):
         """
@@ -181,6 +210,13 @@ class FeatureClass:
 
         for file_cnt, file_name in enumerate(os.listdir(self._aud_dir)):
             wav_filename = '{}.wav'.format(file_name.split('.')[0])
+
+            if self._is_gammatone is True:
+                gamma_spect = self._get_gammatone_for_file(wav_filename)
+
+                gamma_spect = self._get_gammatone_reshape(gamma_spect)
+
+            
             spect = self._get_spectrogram_for_file(wav_filename)
 
             #extract mel
@@ -194,7 +230,11 @@ class FeatureClass:
             elif self._dataset is 'mic':
                 # extract gcc
                 gcc = self._get_gcc(spect)
-                feat = np.concatenate((mel_spect, gcc), axis=-1)
+
+                if self._is_gammatone is True:
+                    feat = np.concatenate((gamma_spect, gcc), axis=-1)
+                else:
+                    feat = np.concatenate((mel_spect, gcc), axis=-1)
             else:
                 print('ERROR: Unknown dataset format {}'.format(self._dataset))
                 exit()
@@ -205,7 +245,7 @@ class FeatureClass:
             # plot.show()
 
             if feat is not None:
-                print('{}: {}, {}'.format(file_cnt, file_name, feat.shape ))
+                print('{}: {}, {}, Gammatone: {}'.format(file_cnt, file_name, feat.shape, self._is_gammatone ))
                 np.save(os.path.join(self._feat_dir, '{}.npy'.format(wav_filename.split('.')[0])), feat)
 
     def preprocess_features(self):
