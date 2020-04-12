@@ -15,7 +15,7 @@ def get_params(argv='1'):
         #dataset_dir='/content/gdrive/My Drive/DCASE2020-Task3/base_folder',
 
         # OUTPUT PATH
-        feat_label_dir='/home/javier/repos/DCASE2020-Task3/input_feature/baseline_log_mel',  # Directory to dump extracted features and labels
+        feat_label_dir='/home/javier/repos/DCASE2020-Task3/input_feature/gammatone_gcclogmel',  # Directory to dump extracted features and labels
         #feat_label_dir='/content/gdrive/My Drive/DCASE2020-Task3/input_feature/baseline_log_mel',
         model_dir='/home/javier/repos/DCASE2020-Task3/outputs/baseline_log_mel/models/',   # Dumps the trained models and training curves in this folder
         dcase_output=True,     # If true, dumps the results recording-wise in 'dcase_dir' path.
@@ -33,6 +33,10 @@ def get_params(argv='1'):
         max_audio_len_s=60,
         nb_mel_bins=64,
 
+        #AUDIO REPRESENTATION TYPE (+)
+        is_gammatone=True, # if set to True, extracts gammatone representation instead of Log-Mel
+        fmin=.0,
+
         # DNN MODEL PARAMETERS
         label_sequence_length=60,        # Feature sequence length
         batch_size=64,              # Batch size
@@ -40,7 +44,7 @@ def get_params(argv='1'):
         nb_cnn2d_filt=64,           # Number of CNN nodes, constant for each layer
         f_pool_size=[4, 4, 2],      # CNN frequency pooling, length of list = number of CNN layers, list value = pooling per layer
 
-        # CNN squeeze-excitation parameter
+        # CNN squeeze-excitation parameter (+)
         ratio=8,
 
         rnn_size=[128, 128],        # RNN contents, length of list = number of layers, list value = number of nodes
