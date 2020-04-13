@@ -11,12 +11,12 @@ def get_params(argv='1'):
         quick_test=False,     # To do quick test. Trains/test on small subset of dataset, and # of epochs
 
         # INPUT PATH
-        #dataset_dir='/home/javier/repos/DCASE2020-Task3/base_folder',  # Base folder containing the foa/mic and metadata folders
-        dataset_dir='/content/gdrive/My Drive/DCASE2020-Task3/base_folder',
+        dataset_dir='/home/javier/repos/DCASE2020-Task3/base_folder',  # Base folder containing the foa/mic and metadata folders
+        #dataset_dir='/content/gdrive/My Drive/DCASE2020-Task3/base_folder',
 
         # OUTPUT PATH
-        #feat_label_dir='/home/javier/repos/DCASE2020-Task3/input_feature/gammatone_gcclogmel',  # Directory to dump extracted features and labels
-        feat_label_dir='/content/gdrive/My Drive/DCASE2020-Task3/input_feature/gammatone_gcclogmel',
+        feat_label_dir='/home/javier/repos/DCASE2020-Task3/input_feature/gammatone_nomax_gcclogmel',  # Directory to dump extracted features and labels
+        #feat_label_dir='/content/gdrive/My Drive/DCASE2020-Task3/input_feature/gammatone_nomax_gcclogmel',
         model_dir='/content/gdrive/My Drive/DCASE2020-Task3/outputs/gammatone_gcclogmel/models/',   # Dumps the trained models and training curves in this folder
         dcase_output=True,     # If true, dumps the results recording-wise in 'dcase_dir' path.
                                # Set this true after you have finalized your model, save the output, and submit
