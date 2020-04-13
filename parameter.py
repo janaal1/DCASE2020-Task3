@@ -48,6 +48,9 @@ def get_params(argv='1'):
         do_baseline=True,
         ratio=8,
 
+        # Get dataset
+        dataset='normalized',
+
         rnn_size=[128, 128],        # RNN contents, length of list = number of layers, list value = number of nodes
         fnn_size=[128],             # FNN contents, length of list = number of layers, list value = number of nodes
         loss_weights=[1., 1000.],     # [sed, doa] weight for scaling the DNN outputs
