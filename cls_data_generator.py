@@ -24,9 +24,9 @@ class DataGenerator(object):
         self._feat_cls = cls_feature_class.FeatureClass(params=params, is_eval=self._is_eval)
         self._label_dir = self._feat_cls.get_label_dir()    
 
-        if params['dataset'] == 'normalized':
+        if params['folder'] == 'normalized':
             self._feat_dir = self._feat_cls.get_normalized_feat_dir()
-        elif params['dataset'] == 'unnormalized':
+        elif params['folder'] == 'unnormalized':
             self._feat_dir = self._feat_cls.get_unnormalized_feat_dir()
 
         self._filenames_list = list()

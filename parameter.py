@@ -17,10 +17,10 @@ def get_params(argv='1'):
         # OUTPUT PATH
         feat_label_dir='/home/javier/repos/DCASE2020-Task3/input_feature/gammatone_nomax_gcclogmel',  # Directory to dump extracted features and labels
         #feat_label_dir='/content/gdrive/My Drive/DCASE2020-Task3/input_feature/gammatone_nomax_gcclogmel',
-        model_dir='/content/gdrive/My Drive/DCASE2020-Task3/outputs/gammatone_gcclogmel/models/',   # Dumps the trained models and training curves in this folder
+        model_dir='/home/javier/repos/DCASE2020-Task3/outputs/gammatone_gcclogmel/models/',   # Dumps the trained models and training curves in this folder
         dcase_output=True,     # If true, dumps the results recording-wise in 'dcase_dir' path.
                                # Set this true after you have finalized your model, save the output, and submit
-        dcase_dir='/content/gdrive/My Drive/DCASE2020-Task3/outputs/gammatone_gcclogmel/results/',  # Dumps the recording-wise network output in this folder
+        dcase_dir='/home/javier/repos/DCASE2020-Task3/outputs/gammatone_gcclogmel/results/',  # Dumps the recording-wise network output in this folder
 
         # DATASET LOADING PARAMETERS
         mode='dev',         # 'dev' - development or 'eval' - evaluation dataset
@@ -39,7 +39,7 @@ def get_params(argv='1'):
 
         # DNN MODEL PARAMETERS
         label_sequence_length=60,        # Feature sequence length
-        batch_size=256,              # Batch size
+        batch_size=64,              # Batch size
         dropout_rate=0,             # Dropout rate, constant for all layers
         nb_cnn2d_filt=64,           # Number of CNN nodes, constant for each layer
         f_pool_size=[4, 4, 2],      # CNN frequency pooling, length of list = number of CNN layers, list value = pooling per layer
@@ -49,7 +49,7 @@ def get_params(argv='1'):
         ratio=8,
 
         # Get dataset
-        dataset='normalized',
+        folder='normalized',
 
         rnn_size=[128, 128],        # RNN contents, length of list = number of layers, list value = number of nodes
         fnn_size=[128],             # FNN contents, length of list = number of layers, list value = number of nodes
@@ -86,33 +86,33 @@ def get_params(argv='1'):
 
 
     # ########### User defined parameters ##############
-    if argv == '1':
-        print("USING DEFAULT PARAMETERS\n")
+    # if argv == '1':
+    #     print("USING DEFAULT PARAMETERS\n")
 
-    elif argv == '2':
-        params['mode'] = 'dev'
-        params['dataset'] = 'mic'
+    # elif argv == '2':
+    #     params['mode'] = 'dev'
+    #     params['dataset'] = 'mic'
 
-    elif argv == '3':
-        params['mode'] = 'eval'
-        params['dataset'] = 'mic'
+    # elif argv == '3':
+    #     params['mode'] = 'eval'
+    #     params['dataset'] = 'mic'
 
-    elif argv == '4':
-        params['mode'] = 'dev'
-        params['dataset'] = 'foa'
+    # elif argv == '4':
+    #     params['mode'] = 'dev'
+    #     params['dataset'] = 'foa'
 
-    elif argv == '5':
-        params['mode'] = 'eval'
-        params['dataset'] = 'foa'
+    # elif argv == '5':
+    #     params['mode'] = 'eval'
+    #     params['dataset'] = 'foa'
 
-    elif argv == '999':
-        print("QUICK TEST MODE\n")
-        params['quick_test'] = True
-        params['epochs_per_fit'] = 1
+    # elif argv == '999':
+    #     print("QUICK TEST MODE\n")
+    #     params['quick_test'] = True
+    #     params['epochs_per_fit'] = 1
 
-    else:
-        print('ERROR: unknown argument {}'.format(argv))
-        exit()
+    # else:
+    #     print('ERROR: unknown argument {}'.format(argv))
+    #     exit()
 
     for key, value in params.items():
         print("\t{}: {}".format(key, value))

@@ -14,7 +14,15 @@ import parameter
 import time
 plot.switch_backend('agg')
 from IPython import embed
+import argparse
 
+def str_to_bool(s):
+    if s == 'True':
+         return True
+    elif s == 'False':
+         return False
+    else:
+         raise ValueError # evil ValueError that doesn't tell you what the wrong value was
 
 def collect_test_labels(_data_gen_test, _data_out, _nb_classes, quick_test):
     # Collecting ground truth for test data
@@ -87,22 +95,37 @@ def main(argv):
                               (default) 1
 
     """
+    # Parser for automatitation
+    parser = argparse.ArgumentParser(description='Argumen parser...')
+
+    parser.add_argument('--ratio', type=int, required=False, default=8, 
+                        help='ratio when squeeze, please set basline to False if not, it is not taken into account')
+    parser.add_argument('--baseline', type=str, required=False, default='False', choices=['True', 'False'],
+                        help='falg to use network baseline or squeeze network proposed')
+    args = parser.parse_args() 
+
     print(argv)
-    if len(argv) != 3:
-        print('\n\n')
-        print('-------------------------------------------------------------------------------------------------------')
-        print('The code expected two optional inputs')
-        print('\t>> python seld.py <task-id> <job-id>')
-        print('\t\t<task-id> is used to choose the user-defined parameter set from parameter.py')
-        print('Using default inputs for now')
-        print('\t\t<job-id> is a unique identifier which is used for output filenames (models, training plots). '
-              'You can use any number or string for this.')
-        print('-------------------------------------------------------------------------------------------------------')
-        print('\n\n')
+    # if len(argv) != 3:
+    #     print('\n\n')
+    #     print('-------------------------------------------------------------------------------------------------------')
+    #     print('The code expected two optional inputs')
+    #     print('\t>> python seld.py <task-id> <job-id>')
+    #     print('\t\t<task-id> is used to choose the user-defined parameter set from parameter.py')
+    #     print('Using default inputs for now')
+    #     print('\t\t<job-id> is a unique identifier which is used for output filenames (models, training plots). '
+    #           'You can use any number or string for this.')
+    #     print('-------------------------------------------------------------------------------------------------------')
+    #     print('\n\n')
 
     # use parameter set defined by user
-    task_id = '1' if len(argv) < 2 else argv[1]
+    task_id = '1' #if len(argv) < 2 else argv[1]
     params = parameter.get_params(task_id)
+
+    params['ratio'] = args.ratio
+    params['do_baseline'] = str_to_bool(args.baseline)
+
+    print('\n\nratio set by user input argument to: {}\n'.format(params['ratio']))
+    print('network baseline set by user input argument to: {}\n\n'.format(params['do_baseline']))
 
     job_id = 1 if len(argv) < 3 else argv[-1]
 
