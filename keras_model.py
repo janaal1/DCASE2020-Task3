@@ -178,33 +178,38 @@ def _tensor_shape(tensor):
     return getattr(tensor, '_keras_shape')
 
 def get_model(data_in, data_out, dropout_rate, nb_cnn2d_filt, f_pool_size, t_pool_size,
-              rnn_size, fnn_size, weights, doa_objective, ratio):
+              rnn_size, fnn_size, weights, doa_objective, baseline, ratio):
     # model definition
     spec_start = Input(shape=(data_in[-3], data_in[-2], data_in[-1]))
 
     # CNN
     spec_cnn = spec_start
     for i, convCnt in enumerate(f_pool_size):
-        # spec_aux = spec_cnn
-        # spec_cnn = Conv2D(nb_cnn2d_filt, 3, padding='same')(spec_cnn)
-        # spec_cnn = BatchNormalization()(spec_cnn)
-        # spec_cnn = ELU()(spec_cnn) 
-        # spec_cnn = Conv2D(nb_cnn2d_filt, 3, padding='same')(spec_cnn)
-        # spec_cnn = BatchNormalization()(spec_cnn) 
-    
-        # spec_aux = Conv2D(nb_cnn2d_filt, 1, padding='same')(spec_aux)
-        # spec_aux = BatchNormalization()(spec_aux)
+        
+        if baseline is False:
 
-        # spec_cnn = add([spec_cnn,spec_aux])
-        # spec_cnn = ELU()(spec_cnn)
+            spec_aux = spec_cnn
+            spec_cnn = Conv2D(nb_cnn2d_filt, 3, padding='same')(spec_cnn)
+            spec_cnn = BatchNormalization()(spec_cnn)
+            spec_cnn = ELU()(spec_cnn) 
+            spec_cnn = Conv2D(nb_cnn2d_filt, 3, padding='same')(spec_cnn)
+            spec_cnn = BatchNormalization()(spec_cnn) 
+        
+            spec_aux = Conv2D(nb_cnn2d_filt, 1, padding='same')(spec_aux)
+            spec_aux = BatchNormalization()(spec_aux)
 
-        # spec_cnn = channel_spatial_squeeze_excite(spec_cnn,ratio=ratio)
+            spec_cnn = add([spec_cnn,spec_aux])
+            spec_cnn = ELU()(spec_cnn)
 
-        # spec_cnn = add([spec_cnn, spec_aux])
+            spec_cnn = channel_spatial_squeeze_excite(spec_cnn,ratio=ratio)
 
-        spec_cnn = Conv2D(filters=nb_cnn2d_filt, kernel_size=(3, 3), padding='same')(spec_cnn)
-        spec_cnn = BatchNormalization()(spec_cnn)
-        spec_cnn = Activation('relu')(spec_cnn)
+            spec_cnn = add([spec_cnn, spec_aux])
+
+        else:
+
+            spec_cnn = Conv2D(filters=nb_cnn2d_filt, kernel_size=(3, 3), padding='same')(spec_cnn)
+            spec_cnn = BatchNormalization()(spec_cnn)
+            spec_cnn = Activation('relu')(spec_cnn)
         spec_cnn = MaxPooling2D(pool_size=(t_pool_size[i], f_pool_size[i]))(spec_cnn)
         spec_cnn = Dropout(dropout_rate)(spec_cnn)
     spec_cnn = Permute((2, 1, 3))(spec_cnn)

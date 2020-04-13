@@ -45,6 +45,7 @@ def get_params(argv='1'):
         f_pool_size=[4, 4, 2],      # CNN frequency pooling, length of list = number of CNN layers, list value = pooling per layer
 
         # CNN squeeze-excitation parameter (+)
+        do_baseline=True,
         ratio=8,
 
         rnn_size=[128, 128],        # RNN contents, length of list = number of layers, list value = number of nodes
