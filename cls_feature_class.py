@@ -102,13 +102,14 @@ class FeatureClass:
 
     # Adding gammtone extaction
     def _gammatone(self, audio_input):
-        audio_input = audio_input/abs(audio_input).max()
+        #audio_input = audio_input/abs(audio_input).max()
         _nb_ch = audio_input.shape[1]
         spectra = np.zeros((self._max_feat_frames, self._nb_mel_bins, _nb_ch))
         for ch_cnt in range(_nb_ch):
             gammatone_ch = gtgram.gtgram(wave=audio_input[:, ch_cnt], fs=self._fs, window_time=self._nfft/self._fs,
                                             hop_time=self._hop_len_s, channels=self._nb_mel_bins, f_min=self._fmin).T
             gammatone_ch = np.flipud(20 * np.log10(gammatone_ch + np.finfo(float).eps))
+            gammatone_ch = np.flip(gammatone_ch,0)
             spectra[0,:,ch_cnt] = gammatone_ch[0,:]
             spectra[-1,:,ch_cnt] = gammatone_ch[-1,:]
             spectra[1:-1,:,ch_cnt] = gammatone_ch
