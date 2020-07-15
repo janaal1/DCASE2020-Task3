@@ -31,11 +31,9 @@ The figure below visualizes the SELDnet input and outputs for one of the recordi
 
 ## SUBMISSION MODIFICATION
 
-<!--<p align="center">
-   <img src="https://github.com/Joferesp/DCASE2020-Task3/tree/develop/images/seld-squeeze-structure_image.jpg" width="300" title="SELDnet squeeze-excitation residual submission">
-</p>-->
-
-![ScreenShot](https://github.com/Joferesp/DCASE2020-Task3/tree/develop/images/seld-squeeze-structure_image.jpg)
+<p align="center">
+   <img src="https://github.com/Joferesp/DCASE2020-Task3/tree/develop/images/seld-squeeze-structure_image.jpg" width="100" title="SELDnet squeeze-excitation residual submission">
+</p>
 
 ## DATASETS
 
