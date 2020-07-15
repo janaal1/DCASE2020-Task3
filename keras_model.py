@@ -200,10 +200,12 @@ def get_model(data_in, data_out, dropout_rate, nb_cnn2d_filt, f_pool_size, t_poo
 
             spec_cnn = add([spec_cnn,spec_aux])
             spec_cnn = ELU()(spec_cnn)
+            
+            if ratio != 0:
 
-            spec_cnn = channel_spatial_squeeze_excite(spec_cnn,ratio=ratio)
+                spec_cnn = channel_spatial_squeeze_excite(spec_cnn,ratio=ratio)
 
-            spec_cnn = add([spec_cnn, spec_aux])
+                spec_cnn = add([spec_cnn, spec_aux])
 
         else:
 

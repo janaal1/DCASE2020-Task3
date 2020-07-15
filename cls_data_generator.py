@@ -22,12 +22,8 @@ class DataGenerator(object):
         self._label_seq_len = params['label_sequence_length']
         self._shuffle = shuffle
         self._feat_cls = cls_feature_class.FeatureClass(params=params, is_eval=self._is_eval)
-        self._label_dir = self._feat_cls.get_label_dir()    
-
-        if params['folder'] == 'normalized':
-            self._feat_dir = self._feat_cls.get_normalized_feat_dir()
-        elif params['folder'] == 'unnormalized':
-            self._feat_dir = self._feat_cls.get_unnormalized_feat_dir()
+        self._label_dir = self._feat_cls.get_label_dir()
+        self._feat_dir = self._feat_cls.get_normalized_feat_dir()
 
         self._filenames_list = list()
         self._nb_frames_file = 0     # Using a fixed number of frames in feat files. Updated in _get_label_filenames_sizes()
@@ -88,9 +84,13 @@ class DataGenerator(object):
         return self._nb_total_batches
 
     def _get_filenames_list_and_feat_label_sizes(self):
+        
         for filename in os.listdir(self._feat_dir):
-            if int(filename[4]) in self._splits: # check which split the file belongs to
+            if self._is_eval:
                 self._filenames_list.append(filename)
+            else:
+                if int(filename[4]) in self._splits: # check which split the file belongs to
+                    self._filenames_list.append(filename)
 
         temp_feat = np.load(os.path.join(self._feat_dir, self._filenames_list[0]))
         self._nb_frames_file = temp_feat.shape[0]

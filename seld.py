@@ -336,7 +336,7 @@ def main(argv):
             test_metric_loss = evaluation_metrics.early_stopping_metric(test_sed_loss, test_doa_loss)
 
             # Calculate DCASE2020 scores
-            cls_new_metric = SELD_evaluation_metrics.SELDMetrics(nb_classes=data_gen_test.get_nb_classes(), doa_threshold=20)
+            cls_new_metric = SELD_evaluation_metrics.SELDMetrics(nb_classes=data_gen_test.get_nb_classes(), doa_threshold=params['lad_doa_thresh'])
             test_pred_dict = feat_cls.regression_label_format_to_output_format(
                 test_sed_pred, test_doa_pred
             )

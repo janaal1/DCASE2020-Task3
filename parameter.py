@@ -11,19 +11,19 @@ def get_params(argv='1'):
         quick_test=False,     # To do quick test. Trains/test on small subset of dataset, and # of epochs
 
         # INPUT PATH
-        dataset_dir='/home/javier/repos/DCASE2020-Task3/base_folder',  # Base folder containing the foa/mic and metadata folders
+        dataset_dir='C:\\JAVIER\\code\\DCASE2020-Task3\\base_folder',  # Base folder containing the foa/mic and metadata folders
         #dataset_dir='/content/gdrive/My Drive/DCASE2020-Task3/base_folder',
 
         # OUTPUT PATH
-        feat_label_dir='/home/javier/repos/DCASE2020-Task3/input_feature/gammatone_nomax_gcclogmel',  # Directory to dump extracted features and labels
+        feat_label_dir='C:\\JAVIER\\code\\DCASE2020-Task3\\input_feature\\baseline_log_mel',  # Directory to dump extracted features and labels
         #feat_label_dir='/content/gdrive/My Drive/DCASE2020-Task3/input_feature/gammatone_nomax_gcclogmel',
-        model_dir='/home/javier/repos/DCASE2020-Task3/outputs/gammatone_gcclogmel/models/',   # Dumps the trained models and training curves in this folder
+        model_dir='C:\\JAVIER\\code\\DCASE2020-Task3\\outputs\\ratio-1\\models',   # Dumps the trained models and training curves in this folder
         dcase_output=True,     # If true, dumps the results recording-wise in 'dcase_dir' path.
                                # Set this true after you have finalized your model, save the output, and submit
-        dcase_dir='/home/javier/repos/DCASE2020-Task3/outputs/gammatone_gcclogmel/results/',  # Dumps the recording-wise network output in this folder
+        dcase_dir='C:\\JAVIER\\code\\DCASE2020-Task3\\outputs\\ratio-1\\results',  # Dumps the recording-wise network output in this folder
 
         # DATASET LOADING PARAMETERS
-        mode='dev',         # 'dev' - development or 'eval' - evaluation dataset
+        mode='eval',         # 'dev' - development or 'eval' - evaluation dataset
         dataset='mic',       # 'foa' - ambisonic or 'mic' - microphone signals
 
         #FEATURE PARAMS
@@ -34,7 +34,7 @@ def get_params(argv='1'):
         nb_mel_bins=64,
 
         #AUDIO REPRESENTATION TYPE (+)
-        is_gammatone=True, # if set to True, extracts gammatone representation instead of Log-Mel
+        is_gammatone=False, # if set to True, extracts gammatone representation instead of Log-Mel
         fmin=.0,
 
         # DNN MODEL PARAMETERS
@@ -45,8 +45,8 @@ def get_params(argv='1'):
         f_pool_size=[4, 4, 2],      # CNN frequency pooling, length of list = number of CNN layers, list value = pooling per layer
 
         # CNN squeeze-excitation parameter (+)
-        do_baseline=True,
-        ratio=8,
+        do_baseline=False,
+        ratio=16,
 
         # Get dataset
         folder='normalized',
