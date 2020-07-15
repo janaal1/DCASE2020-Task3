@@ -29,11 +29,11 @@ The SED output of the network is in the continuous range of [0 1] for each sound
 
 The figure below visualizes the SELDnet input and outputs for one of the recordings in the dataset. The horizontal-axis of all sub-plots for a given dataset represents the same time frames, the vertical-axis for spectrogram sub-plot represents the frequency bins, vertical-axis for SED reference and prediction sub-plots represents the unique sound event class identifier, and for the DOA reference and prediction sub-plots, it represents the distances along the Cartesian axes. The figures represents each sound event class and its associated DOA outputs with a unique color. Similar plot can be visualized on your results using the [provided script](visualize_SELD_output.py).
 
-<p align="center">
-   <img src="https://github.com/sharathadavanne/seld-dcase2020/blob/master/images/SELDnet_output.jpg" width="300" title="SELDnet input and output visualization">
-</p>
+## SUBMISSION MODIFICATION
 
-![alt text](images/seld-squeeze-structure.pdf)
+<p align="center">
+   <img src="https://github.com/Joferesp/DCASE2020-Task3/tree/develop/images/seld-squeeze-structure.pdf" width="300" title="SELDnet squeeze-excitation residual submission">
+</p>
 
 ## DATASETS
 
