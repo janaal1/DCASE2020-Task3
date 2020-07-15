@@ -27,8 +27,6 @@ The final SELDnet architecture is as shown below. The input is the multichannel 
 
 The SED output of the network is in the continuous range of [0 1] for each sound event in the dataset, and this value is thresholded to obtain a binary decision for the respective sound event activity. Finally, the respective DOA estimates for these active sound event classes provide their spatial locations.
 
-The figure below visualizes the SELDnet input and outputs for one of the recordings in the dataset. The horizontal-axis of all sub-plots for a given dataset represents the same time frames, the vertical-axis for spectrogram sub-plot represents the frequency bins, vertical-axis for SED reference and prediction sub-plots represents the unique sound event class identifier, and for the DOA reference and prediction sub-plots, it represents the distances along the Cartesian axes. The figures represents each sound event class and its associated DOA outputs with a unique color. Similar plot can be visualized on your results using the [provided script](visualize_SELD_output.py).
-
 ## SUBMISSION MODIFICATION
 
 <!--<p align="center">
