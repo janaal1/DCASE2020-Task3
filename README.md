@@ -1,12 +1,16 @@
 
-# DCASE 2020: Sound event localization and detection (SELD) task
-[Please visit the official webpage of the DCASE 2020 Challenge for details missing in this repo](http://dcase.community/challenge2020/task-sound-event-localization-and-detection). 
+# DCASE 2020: SELD using squeeze-excitation residual networks
+[Please visit the official webpage of the DCASE 2020 Challenge for comparison with other submissions](http://dcase.community/challenge2020/task-sound-event-localization-and-detection-results). 
    
-As the baseline method for the SELD task, we use the SELDnet method studied in the following papers. If you are using this baseline method or the datasets in any format, then please consider citing the following two papers
+The main objective of this submission was to study how squeeze-excitation techniques can improve the behavior of sound event detection and localization (SELD) systems. To do so, we start from the network presented as a baseline consisting of a CRNN and replace the convolutional layers by Conv-StandardPOST blocks. This block was presented in:
 
-> Sharath Adavanne, Archontis Politis, Joonas Nikunen and Tuomas Virtanen, "Sound event localization and detection of overlapping sources using convolutional recurrent neural network" in IEEE Journal of Selected Topics in Signal Processing (JSTSP 2018)
+> Naranjo-Alcazar, J., Perez-Castanos, S., Zuccarello, P., & Cobos, M. (2020). Acoustic Scene Classification with Squeeze-Excitation Residual Networks. IEEE Access.
 
-> Sharath Adavanne, Archontis Politis and Tuomas Virtanen, "Localization, Detection and Tracking of Multiple Moving Sound Sources with a Convolutional Recurrent Neural Network" in the Workshop on Detection and Classification of Acoustic Scenes and Events (DCASE 2019)
+This repo implementation is presented in:
+
+> Naranjo-Alcazar, Javier, et al. "Sound Event Localization and Detection using Squeeze-Excitation Residual CNNs." arXiv preprint arXiv:2006.14436 (2020).
+
+Please consider citing these works if the code or something presented in them has been used.
 
 ## BASELINE METHOD
 
@@ -28,6 +32,8 @@ The figure below visualizes the SELDnet input and outputs for one of the recordi
 <p align="center">
    <img src="https://github.com/sharathadavanne/seld-dcase2020/blob/master/images/SELDnet_output.jpg" width="300" title="SELDnet input and output visualization">
 </p>
+
+![alt text](images/seld-squeeze-structure.pdf)
 
 ## DATASETS
 
