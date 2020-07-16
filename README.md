@@ -33,7 +33,7 @@ The SED output of the network is in the continuous range of [0 1] for each sound
    <img src="https://github.com/Joferesp/DCASE2020-Task3/tree/develop/images/seld-squeeze-structure_image.jpg" alt="Screenshot" style="max-width:100%;">
 </p>-->
 
-![seldnet_squeeze_excitation](images/seld-squeeze-structure_image.jpg)
+![seldnet_squeeze_excitation](images/seld-squeeze-structure_image.jpg =250x)
 
 ## DATASETS
 
