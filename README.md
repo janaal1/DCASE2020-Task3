@@ -29,20 +29,21 @@ The SED output of the network is in the continuous range of [0 1] for each sound
 
 ## SUBMISSION MODIFICATION
 
+This image shows the submission architecture:
+
 <p align="center">
-   <img src="https://github.com/Joferesp/DCASE2020-Task3/tree/develop/images/seld-squeeze-structure_image.jpg" width="250" height="250">
+   <img src="https://github.com/Joferesp/DCASE2020-Task3/tree/develop/images/seld_squeeze_structure_image.jpg" width="250" height="250">
 </p>
 
 <!--![seldnet_squeeze_excitation](images/seld-squeeze-structure_image.jpg =250x) -->
 
 ## DATASETS
 
-The participants can choose either of the two or both the following datasets,
+The dataset used has been:
 
- * **TAU-NIGENS Spatial Sound Events 2020 - Ambisonic**
  * **TAU-NIGENS Spatial Sound Events 2020 - Microphone Array**
 
-These datasets contain recordings from an identical scene, with **TAU-NIGENS Spatial Sound Events 2020 - Ambisonic** providing four-channel First-Order Ambisonic (FOA) recordings while  **TAU-NIGENS Spatial Sound Events 2020 - Microphone Array** provides four-channel directional microphone recordings from a tetrahedral array configuration. Both formats are extracted from the same microphone array, and additional information on the spatial characteristics of each format can be found below. The participants can choose one of the two, or both the datasets based on the audio format they prefer. Both the datasets, consists of a development and evaluation set. The development set consists of 600, one minute long recordings sampled at 24000 Hz. All participants are expected to use the fixed splits provided in the baseline method for reporting the development scores. We use 400 recordings for training split (fold 3 to 6), 100 for validation (fold 2) and 100 for testing (fold 1). The evaluation set consists of 200, one-minute recordings, and will be released at a later point. 
+**TAU-NIGENS Spatial Sound Events 2020 - Microphone Array** provides four-channel directional microphone recordings from a tetrahedral array configuration. This format is extracted from the same microphone array, and additional information on the spatial characteristics of each format can be found below. This dataset consists of a development and evaluation set. The development set consists of 600, one minute long recordings sampled at 24000 Hz. We use 400 recordings for training split (fold 3 to 6), 100 for validation (fold 2) and 100 for testing (fold 1). The evaluation set consists of 200, one-minute recordings, and will be released at a later point. 
 
 More details on the recording procedure and dataset can be read on the [DCASE 2020 task webpage](http://dcase.community/challenge2020/task-sound-event-localization-and-detection).
 
@@ -84,27 +85,19 @@ In order to quickly train SELDnet follow the steps below.
 python3 batch_feature_extraction.py
 ```
 
-You can now train the SELDnet using default parameters using
-```
-python3 seld.py
-```
-
-* Additionally, you can add/change parameters by using a unique identifier \<task-id\> in if-else loop as seen in the `parameter.py` script and call them as following
-```
-python3 seld.py <task-id> <job-id>
-```
-Where \<job-id\> is a unique identifier which is used for output filenames (models, training plots). You can use any number or string for this.
-
-In order to get baseline results on the development set for Microphone array recordings, you can run the following command
-```
-python3 seld.py 2
-```
-Similarly, for Ambisonic format baseline results, run the following command
-```
-python3 seld.py 4
+You can now train the SELDnet using this subimssion modifications. Parameters that MUST be indicated are --baseline and --ratio
+```python
+python3 seld.py --baseline False --ratio 4
 ```
 
-* By default, the code runs in `quick_test = True` mode. This trains the network for 2 epochs on only 2 mini-batches. Once you get to run the code sucessfully, set `quick_test = False` in `parameter.py` script and train on the entire data.
+executes ConvStandard modules with ratio =4. If you want to execute the baseline code, set --baseline to True. If want to execute residual learning without squeeze-excitation:
+
+```python
+python3 seld.py --baseline False --ratio 0
+```
+
+
+* By default, the code runs in `quick_test = False` mode. Setting `quick_test = True` in `parameter.py` trains the network for 2 epochs on only 2 mini-batches.
 
 * The code also plots training curves, intermediate results and saves models in the `model_dir` path provided by the user in `parameter.py` file.
 
@@ -121,6 +114,8 @@ The second metric is more focused on the localization part, also referred as the
 
 The evaluation metric scores for the test split of the development dataset is given below    
 
+### Baseline results
+
 | Dataset | ER | F | DE | DE_F |
 | ----| --- | --- | --- | --- |
 | Ambisonic (FOA) | 0.84 | 23.3 % | 28.0&deg; | 56.4 % |
@@ -128,17 +123,10 @@ The evaluation metric scores for the test split of the development dataset is gi
 
 **Note:** The reported baseline system performance is not exactly reproducible due to varying setups. However, you should be able to obtain very similar results.
 
-## Submission
+## Submission results
 
-* Before submission, make sure your SELD results look good by visualizing the results using `visualize_SELD_output.py` script
-* Make sure the file-wise output you are submitting is produced at 100 ms hop length. At this hop length a 60 s audio file has 600 frames.
 
-For more information on the submission file formats [check the website](http://dcase.community/challenge2020/task-sound-event-localization-and-detection#submission)
-
-## License
-
-Except for the contents in the `metrics` folder that have [MIT License](metrics/LICENSE.md). The rest of the repository is licensed under the [TAU License](LICENSE.md).
 
 ## Acknowledgments
 
-The research leading to these results has received funding from the European Research Council under the European Unions H2020 Framework Programme through ERC Grant Agreement 637422 EVERYSOUND.
+
