@@ -32,12 +32,12 @@ The SED output of the network is in the continuous range of [0 1] for each sound
 This image shows the submission architecture:
 
 <p align="center">
-   <img src="images/seld_squeeze_structure_image.jpg" width="250" height="250">
+   <img src="images/seld_squeeze_structure_image.jpg" width="400" height="400">
 </p>
 
 <!--![seldnet_squeeze_excitation](images/seld-squeeze-structure_image.jpg =250x) -->
 
-## DATASETS
+## DATASET
 
 The dataset used has been:
 
@@ -103,7 +103,7 @@ python3 seld.py --baseline False --ratio 0
 
 * In order to visualize the output of SELDnet and for submission of results, set `dcase_output=True` and provide `dcase_dir` directory. This will dump file-wise results in the directory, which can be individually visualized using `visualize_SELD_output.py` script.
 
-## Results on development dataset
+## Results on development dataset (baseline)
 
 As the evaluation metrics we use two different approaches as discussed in our recent paper below
 
@@ -118,15 +118,39 @@ The evaluation metric scores for the test split of the development dataset is gi
 
 | Dataset | ER | F | DE | DE_F |
 | ----| --- | --- | --- | --- |
-| Ambisonic (FOA) | 0.84 | 23.3 % | 28.0&deg; | 56.4 % |
-| Microphone Array (MIC) |0.82 | 24.3 % | 28.4&deg; | 61.2 % |
+| Microphone Array (MIC) | 0.78 | 31.4 % | 27.3&deg; | 59.0 % |
+
 
 **Note:** The reported baseline system performance is not exactly reproducible due to varying setups. However, you should be able to obtain very similar results.
 
 ## Submission results
 
+### Development stage (results on testing folder)
 
+set mode to dev
 
-## Acknowledgments
+| ratio | ER | F | DE | DE_F |
+| ----| --- | --- | --- | --- |
+| 0 | 0.68 | 42.3 | 22.5 | 65.1 |
+| 1 | 0.70 | 39.2 | 23.5 | 63.6 |
+| 2 | 0.69 | 40.4 | 23.2 | 62.1 |
+| 4 | 0.68 | 40.9 | 23.3 | 65.0 |
+| 8 | 0.69 | 40.8 | 23.5 | 63.8 |
+| 16 | 0.69 | 40.7 | 23.3 | 62.8
+
+### Challenge results 
+
+* The team submission ranked 11/15
+
+* Best system ranked, ratio = 1, 30/43
+
+| ratio | ER | F | DE | DE_F |
+| :----:| --- | --- | --- | --- |
+| organization baseline | 0.70 | 39.5 | 23.2 | 62.1 |
+| 0 | 0.61 | 48.3 | 19.2 | 65.9 |
+| 1 | 0.61 | 49.1 | 19.5 | 67.1 |
+| 8 | 0.64 | 46.7 | 20.0 | 64.5 |
+| 16 | 0.63 | 47.3 | 19.5 | 65.5 |
+
 
 
