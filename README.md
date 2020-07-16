@@ -32,7 +32,7 @@ The SED output of the network is in the continuous range of [0 1] for each sound
 This image shows the submission architecture:
 
 <p align="center">
-   <img src="https://github.com/Joferesp/DCASE2020-Task3/tree/develop/images/seld_squeeze_structure_image.jpg" width="250" height="250">
+   <img src="images/seld_squeeze_structure_image.jpg" width="250" height="250">
 </p>
 
 <!--![seldnet_squeeze_excitation](images/seld-squeeze-structure_image.jpg =250x) -->
