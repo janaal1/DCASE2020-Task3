@@ -1,12 +1,16 @@
 
-# DCASE 2020: Sound event localization and detection (SELD) task
-[Please visit the official webpage of the DCASE 2020 Challenge for details missing in this repo](http://dcase.community/challenge2020/task-sound-event-localization-and-detection). 
+# DCASE 2020: SELD using squeeze-excitation residual networks
+[Please visit the official webpage of the DCASE 2020 Challenge for comparison with other submissions](http://dcase.community/challenge2020/task-sound-event-localization-and-detection-results). 
    
-As the baseline method for the SELD task, we use the SELDnet method studied in the following papers. If you are using this baseline method or the datasets in any format, then please consider citing the following two papers
+The main objective of this submission was to study how squeeze-excitation techniques can improve the behavior of sound event detection and localization (SELD) systems. To do so, we start from the network presented as a baseline consisting of a CRNN and replace the convolutional layers by Conv-StandardPOST blocks. This block was presented in:
 
-> Sharath Adavanne, Archontis Politis, Joonas Nikunen and Tuomas Virtanen, "Sound event localization and detection of overlapping sources using convolutional recurrent neural network" in IEEE Journal of Selected Topics in Signal Processing (JSTSP 2018)
+> Naranjo-Alcazar, J., Perez-Castanos, S., Zuccarello, P., & Cobos, M. (2020). Acoustic Scene Classification with Squeeze-Excitation Residual Networks. IEEE Access.
 
-> Sharath Adavanne, Archontis Politis and Tuomas Virtanen, "Localization, Detection and Tracking of Multiple Moving Sound Sources with a Convolutional Recurrent Neural Network" in the Workshop on Detection and Classification of Acoustic Scenes and Events (DCASE 2019)
+This repo implementation is presented in:
+
+> Naranjo-Alcazar, Javier, et al. "Sound Event Localization and Detection using Squeeze-Excitation Residual CNNs." arXiv preprint arXiv:2006.14436 (2020).
+
+Please consider citing these works if the code or something presented in them has been used.
 
 ## BASELINE METHOD
 
@@ -23,20 +27,23 @@ The final SELDnet architecture is as shown below. The input is the multichannel 
 
 The SED output of the network is in the continuous range of [0 1] for each sound event in the dataset, and this value is thresholded to obtain a binary decision for the respective sound event activity. Finally, the respective DOA estimates for these active sound event classes provide their spatial locations.
 
-The figure below visualizes the SELDnet input and outputs for one of the recordings in the dataset. The horizontal-axis of all sub-plots for a given dataset represents the same time frames, the vertical-axis for spectrogram sub-plot represents the frequency bins, vertical-axis for SED reference and prediction sub-plots represents the unique sound event class identifier, and for the DOA reference and prediction sub-plots, it represents the distances along the Cartesian axes. The figures represents each sound event class and its associated DOA outputs with a unique color. Similar plot can be visualized on your results using the [provided script](visualize_SELD_output.py).
+## SUBMISSION MODIFICATION
+
+This image shows the submission architecture:
 
 <p align="center">
-   <img src="https://github.com/sharathadavanne/seld-dcase2020/blob/master/images/SELDnet_output.jpg" width="300" title="SELDnet input and output visualization">
+   <img src="images/seld_squeeze_structure_image.jpg" width="400" height="400">
 </p>
 
-## DATASETS
+<!--![seldnet_squeeze_excitation](images/seld-squeeze-structure_image.jpg =250x) -->
 
-The participants can choose either of the two or both the following datasets,
+## DATASET
 
- * **TAU-NIGENS Spatial Sound Events 2020 - Ambisonic**
+The dataset used has been:
+
  * **TAU-NIGENS Spatial Sound Events 2020 - Microphone Array**
 
-These datasets contain recordings from an identical scene, with **TAU-NIGENS Spatial Sound Events 2020 - Ambisonic** providing four-channel First-Order Ambisonic (FOA) recordings while  **TAU-NIGENS Spatial Sound Events 2020 - Microphone Array** provides four-channel directional microphone recordings from a tetrahedral array configuration. Both formats are extracted from the same microphone array, and additional information on the spatial characteristics of each format can be found below. The participants can choose one of the two, or both the datasets based on the audio format they prefer. Both the datasets, consists of a development and evaluation set. The development set consists of 600, one minute long recordings sampled at 24000 Hz. All participants are expected to use the fixed splits provided in the baseline method for reporting the development scores. We use 400 recordings for training split (fold 3 to 6), 100 for validation (fold 2) and 100 for testing (fold 1). The evaluation set consists of 200, one-minute recordings, and will be released at a later point. 
+**TAU-NIGENS Spatial Sound Events 2020 - Microphone Array** provides four-channel directional microphone recordings from a tetrahedral array configuration. This format is extracted from the same microphone array, and additional information on the spatial characteristics of each format can be found below. This dataset consists of a development and evaluation set. The development set consists of 600, one minute long recordings sampled at 24000 Hz. We use 400 recordings for training split (fold 3 to 6), 100 for validation (fold 2) and 100 for testing (fold 1). The evaluation set consists of 200, one-minute recordings, and will be released at a later point. 
 
 More details on the recording procedure and dataset can be read on the [DCASE 2020 task webpage](http://dcase.community/challenge2020/task-sound-event-localization-and-detection).
 
@@ -78,33 +85,25 @@ In order to quickly train SELDnet follow the steps below.
 python3 batch_feature_extraction.py
 ```
 
-You can now train the SELDnet using default parameters using
-```
-python3 seld.py
-```
-
-* Additionally, you can add/change parameters by using a unique identifier \<task-id\> in if-else loop as seen in the `parameter.py` script and call them as following
-```
-python3 seld.py <task-id> <job-id>
-```
-Where \<job-id\> is a unique identifier which is used for output filenames (models, training plots). You can use any number or string for this.
-
-In order to get baseline results on the development set for Microphone array recordings, you can run the following command
-```
-python3 seld.py 2
-```
-Similarly, for Ambisonic format baseline results, run the following command
-```
-python3 seld.py 4
+You can now train the SELDnet using this subimssion modifications. Parameters that MUST be indicated are --baseline and --ratio
+```python
+python3 seld.py --baseline False --ratio 4
 ```
 
-* By default, the code runs in `quick_test = True` mode. This trains the network for 2 epochs on only 2 mini-batches. Once you get to run the code sucessfully, set `quick_test = False` in `parameter.py` script and train on the entire data.
+executes ConvStandard modules with ratio =4. If you want to execute the baseline code, set --baseline to True. If want to execute residual learning without squeeze-excitation:
+
+```python
+python3 seld.py --baseline False --ratio 0
+```
+
+
+* By default, the code runs in `quick_test = False` mode. Setting `quick_test = True` in `parameter.py` trains the network for 2 epochs on only 2 mini-batches.
 
 * The code also plots training curves, intermediate results and saves models in the `model_dir` path provided by the user in `parameter.py` file.
 
 * In order to visualize the output of SELDnet and for submission of results, set `dcase_output=True` and provide `dcase_dir` directory. This will dump file-wise results in the directory, which can be individually visualized using `visualize_SELD_output.py` script.
 
-## Results on development dataset
+## Results on development dataset (baseline)
 
 As the evaluation metrics we use two different approaches as discussed in our recent paper below
 
@@ -115,24 +114,43 @@ The second metric is more focused on the localization part, also referred as the
 
 The evaluation metric scores for the test split of the development dataset is given below    
 
+### Baseline results
+
 | Dataset | ER | F | DE | DE_F |
 | ----| --- | --- | --- | --- |
-| Ambisonic (FOA) | 0.84 | 23.3 % | 28.0&deg; | 56.4 % |
-| Microphone Array (MIC) |0.82 | 24.3 % | 28.4&deg; | 61.2 % |
+| Microphone Array (MIC) | 0.78 | 31.4 % | 27.3&deg; | 59.0 % |
+
 
 **Note:** The reported baseline system performance is not exactly reproducible due to varying setups. However, you should be able to obtain very similar results.
 
-## Submission
+## Submission results
 
-* Before submission, make sure your SELD results look good by visualizing the results using `visualize_SELD_output.py` script
-* Make sure the file-wise output you are submitting is produced at 100 ms hop length. At this hop length a 60 s audio file has 600 frames.
+### Development stage (results on testing folder)
 
-For more information on the submission file formats [check the website](http://dcase.community/challenge2020/task-sound-event-localization-and-detection#submission)
+set mode to dev
 
-## License
+| ratio | ER | F | DE | DE_F |
+| ----| --- | --- | --- | --- |
+| 0 | 0.68 | 42.3 | 22.5 | 65.1 |
+| 1 | 0.70 | 39.2 | 23.5 | 63.6 |
+| 2 | 0.69 | 40.4 | 23.2 | 62.1 |
+| 4 | 0.68 | 40.9 | 23.3 | 65.0 |
+| 8 | 0.69 | 40.8 | 23.5 | 63.8 |
+| 16 | 0.69 | 40.7 | 23.3 | 62.8
 
-Except for the contents in the `metrics` folder that have [MIT License](metrics/LICENSE.md). The rest of the repository is licensed under the [TAU License](LICENSE.md).
+### Challenge results 
 
-## Acknowledgments
+* The team submission ranked 11/15
 
-The research leading to these results has received funding from the European Research Council under the European Unions H2020 Framework Programme through ERC Grant Agreement 637422 EVERYSOUND.
+* Best system ranked, ratio = 1, 30/43
+
+| ratio | ER | F | DE | DE_F |
+| :----:| --- | --- | --- | --- |
+| organization baseline | 0.70 | 39.5 | 23.2 | 62.1 |
+| 0 | 0.61 | 48.3 | 19.2 | 65.9 |
+| 1 | 0.61 | 49.1 | 19.5 | 67.1 |
+| 8 | 0.64 | 46.7 | 20.0 | 64.5 |
+| 16 | 0.63 | 47.3 | 19.5 | 65.5 |
+
+
+

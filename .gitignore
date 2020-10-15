@@ -1,0 +1,8 @@
+/home/jose/DCASE2020_Task3/base_folder/*
+/home/jose/DCASE2020_Task3/input_feature/*
+base_folder/*
+input_feature/*
+.vscode/*
+__pycache__/*
+metrics/__pycache__/*
+gammatone/gammatone/__pycache__/*

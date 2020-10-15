@@ -14,7 +14,15 @@ import parameter
 import time
 plot.switch_backend('agg')
 from IPython import embed
+import argparse
 
+def str_to_bool(s):
+    if s == 'True':
+         return True
+    elif s == 'False':
+         return False
+    else:
+         raise ValueError # evil ValueError that doesn't tell you what the wrong value was
 
 def collect_test_labels(_data_gen_test, _data_out, _nb_classes, quick_test):
     # Collecting ground truth for test data
@@ -87,22 +95,37 @@ def main(argv):
                               (default) 1
 
     """
+    # Parser for automatitation
+    parser = argparse.ArgumentParser(description='Argumen parser...')
+
+    parser.add_argument('--ratio', type=int, required=False, default=8, 
+                        help='ratio when squeeze, please set basline to False if not, it is not taken into account')
+    parser.add_argument('--baseline', type=str, required=False, default='False', choices=['True', 'False'],
+                        help='falg to use network baseline or squeeze network proposed')
+    args = parser.parse_args() 
+
     print(argv)
-    if len(argv) != 3:
-        print('\n\n')
-        print('-------------------------------------------------------------------------------------------------------')
-        print('The code expected two optional inputs')
-        print('\t>> python seld.py <task-id> <job-id>')
-        print('\t\t<task-id> is used to choose the user-defined parameter set from parameter.py')
-        print('Using default inputs for now')
-        print('\t\t<job-id> is a unique identifier which is used for output filenames (models, training plots). '
-              'You can use any number or string for this.')
-        print('-------------------------------------------------------------------------------------------------------')
-        print('\n\n')
+    # if len(argv) != 3:
+    #     print('\n\n')
+    #     print('-------------------------------------------------------------------------------------------------------')
+    #     print('The code expected two optional inputs')
+    #     print('\t>> python seld.py <task-id> <job-id>')
+    #     print('\t\t<task-id> is used to choose the user-defined parameter set from parameter.py')
+    #     print('Using default inputs for now')
+    #     print('\t\t<job-id> is a unique identifier which is used for output filenames (models, training plots). '
+    #           'You can use any number or string for this.')
+    #     print('-------------------------------------------------------------------------------------------------------')
+    #     print('\n\n')
 
     # use parameter set defined by user
-    task_id = '1' if len(argv) < 2 else argv[1]
+    task_id = '1' #if len(argv) < 2 else argv[1]
     params = parameter.get_params(task_id)
+
+    params['ratio'] = args.ratio
+    params['do_baseline'] = str_to_bool(args.baseline)
+
+    print('\n\nratio set by user input argument to: {}\n'.format(params['ratio']))
+    print('network baseline set by user input argument to: {}\n\n'.format(params['do_baseline']))
 
     job_id = 1 if len(argv) < 3 else argv[-1]
 
@@ -163,7 +186,8 @@ def main(argv):
         model = keras_model.get_model(data_in=data_in, data_out=data_out, dropout_rate=params['dropout_rate'],
                                       nb_cnn2d_filt=params['nb_cnn2d_filt'], f_pool_size=params['f_pool_size'], t_pool_size=params['t_pool_size'],
                                       rnn_size=params['rnn_size'], fnn_size=params['fnn_size'],
-                                      weights=params['loss_weights'], doa_objective=params['doa_objective'])
+                                      weights=params['loss_weights'], doa_objective=params['doa_objective'],
+                                      baseline=params['do_baseline'], ratio=params['ratio'])
         best_seld_metric = 99999
         best_epoch = -1
         patience_cnt = 0
@@ -312,7 +336,7 @@ def main(argv):
             test_metric_loss = evaluation_metrics.early_stopping_metric(test_sed_loss, test_doa_loss)
 
             # Calculate DCASE2020 scores
-            cls_new_metric = SELD_evaluation_metrics.SELDMetrics(nb_classes=data_gen_test.get_nb_classes(), doa_threshold=20)
+            cls_new_metric = SELD_evaluation_metrics.SELDMetrics(nb_classes=data_gen_test.get_nb_classes(), doa_threshold=params['lad_doa_thresh'])
             test_pred_dict = feat_cls.regression_label_format_to_output_format(
                 test_sed_pred, test_doa_pred
             )
